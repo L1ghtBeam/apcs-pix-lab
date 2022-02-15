@@ -217,6 +217,79 @@ public class Picture extends SimplePicture
     }
   }
   
+  public void keepOnlyBlue(){
+      Pixel[] pixels = getPixels();
+      for (Pixel pix : pixels){
+          pix.setRed(0);
+          pix.setGreen(0);
+      }
+  }
+  
+  public void negate(){
+      Pixel[] pixels = getPixels();
+      for (Pixel pix : pixels){
+          pix.setRed(255 - pix.getRed());
+          pix.setGreen(255 - pix.getGreen());
+          pix.setBlue(255 - pix.getBlue());
+      }
+  }
+  
+  public void grayscale(){
+      Pixel[] pixels = getPixels();
+      for (Pixel pix : pixels){
+          int avg = (pix.getRed() + pix.getGreen() + pix.getBlue()) / 3;
+          pix.setRed(avg);
+          pix.setGreen(avg);
+          pix.setBlue(avg);
+      }
+  }
+  
+  /**
+   * Reduces blue and green levels by 50% and 60% and increases red levels by 200%
+   */
+  public void fixUnderwater(){
+      Pixel[] pixels = getPixels();
+      for (Pixel pix : pixels){
+          pix.setRed((int)(pix.getRed() * 2.0));
+          pix.setGreen((int)(pix.getGreen() * 0.4));
+          pix.setBlue((int)(pix.getBlue() * 0.5));
+      }
+  }
+  
+  public void mirrorVerticalRightToLeft()
+  {
+    Pixel[][] pixels = this.getPixels2D();
+    Pixel leftPixel = null;
+    Pixel rightPixel = null;
+    int width = pixels[0].length;
+    for (int row = pixels.length - 1; row >= 0; row--)
+    {
+      for (int col = 0; col < width / 2; col++)
+      {
+        leftPixel = pixels[row][col];
+        rightPixel = pixels[row][width - 1 - col];
+        rightPixel.setColor(leftPixel.getColor());
+      }
+    } 
+  }
+  
+  public void mirrorHorizontal(){
+      Pixel[][] pixels = getPixels2D();
+      for (int row = pixels.length / 2; row < pixels.length; row++){
+          for (int col = 0; col < pixels[row].length; col++){
+              pixels[row][col].setColor(pixels[pixels.length - row - 1][col].getColor());
+          }
+      }
+  }
+  
+  public void mirrorHorizontalBotToTop(){
+      Pixel[][] pixels = getPixels2D();
+      for (int row = pixels.length - 1; row >= pixels.length / 2; row--){
+          for (int col = 0; col < pixels[row].length; col++){
+              pixels[row][col].setColor(pixels[pixels.length - row - 1][col].getColor());
+          }
+      }
+  }
   
   /* Main method for testing - each class in Java can have a main 
    * method 
